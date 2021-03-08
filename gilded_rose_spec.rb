@@ -43,7 +43,7 @@ RSpec.describe "GildedRose" do
         it "quality should not be higher than 50" do
           items[0].quality = 49
           number_of_days = 3
-          number_of_days.times do |x|
+          number_of_days.times do 
             update_quality(items)
           end
           expect(items[0].quality).to eq 50  
@@ -56,7 +56,7 @@ RSpec.describe "GildedRose" do
         it "quality should increase twice as fast" do
           initial_quality = items[0].quality
           number_of_days = 5
-          number_of_days.times do |x|
+          number_of_days.times do 
             update_quality(items)
           end  
           expect(items[0].quality).to eq number_of_days*2 + initial_quality
@@ -64,7 +64,7 @@ RSpec.describe "GildedRose" do
         it "quality should not be higher than 50" do
           items[0].quality = 48
           number_of_days = 5
-          number_of_days.times do |x|
+          number_of_days.times do 
             update_quality(items)
           end  
           expect(items[0].quality).to eq 50
@@ -131,7 +131,7 @@ RSpec.describe "GildedRose" do
         it "quality should not be higher than 50" do
           items[0].quality = 48
           number_of_days = 3
-          number_of_days.times do |x|
+          number_of_days.times do
             update_quality(items)
           end  
           expect(items[0].quality).to eq 50
@@ -148,7 +148,7 @@ RSpec.describe "GildedRose" do
         it "quality should not be higher than 50" do
           items[0].quality = 48
           number_of_days = 3
-          number_of_days.times do |x|
+          number_of_days.times do
             update_quality(items)
           end  
           expect(items[0].quality).to eq 50
@@ -165,7 +165,7 @@ RSpec.describe "GildedRose" do
         it "quality should not be higher than 50" do
           items[0].quality = 48
           number_of_days = 3
-          number_of_days.times do |x|
+          number_of_days.times do 
             update_quality(items)
           end  
           expect(items[0].quality).to eq 50
@@ -178,6 +178,30 @@ RSpec.describe "GildedRose" do
           initial_quality = items[0].quality
           update_quality(items)
           expect(items[0].quality).to eq 0
+        end
+      end
+    end
+    context "Conjured items" do
+      let(:items) do [Item.new("Conjured Mana Cake", 3, 6),]  
+      end
+      it "sell_in date should decrease by 1 every update" do
+        initial_sell_in = items[0].sell_in
+        update_quality(items)
+        expect(items[0].sell_in).to eq initial_sell_in-1
+      end
+      context "sell_in date has not passed" do
+        it "quality should decrease by 2 every update" do
+          initial_quality = items[0].quality
+          update_quality(items)
+          expect(items[0].quality).to eq initial_quality-2
+        end
+      end
+      context "sell_in date has passed " do 
+        it "quality should decrease by 4 every update" do
+          items[0].sell_in = 0
+          initial_quality = items[0].quality
+          update_quality(items)
+          expect(items[0].quality).to eq initial_quality-4
         end
       end
     end
